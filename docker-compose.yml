@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  kali:
+    build:
+      context: .
+      dockerfile: Dockerfile.kali
+    container_name: kali3B
+    hostname: kali-server
+    privileged: true
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./kali_data:/root/data
+    networks:
+      - L3B_network
+
+
+  serveur.victime:
+    build:
+      context: .
+      dockerfile: Dockerfile.victime
+    container_name: victime
+    hostname: victime-server
+    privileged: true
+    tty: true
+    stdin_open: true
+    ports:
+      - "21:21"     # Serveur FTP
+      - "22:22"   # Serveur SSH
+      - "80:80"
+    volumes:
+      - ./victime_data/ftp:/home/ftp
+      - ./victime_data/http:/var/www/html
+    networks:
+      - L3B_network
+
+networks:
+  L3B_network:
+    driver: bridge

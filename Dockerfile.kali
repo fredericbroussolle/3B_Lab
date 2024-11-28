@@ -1,0 +1,11 @@
+FROM kalilinux/kali-rolling
+
+# Mise à jour et installation des outils nécessaires
+RUN apt update && apt upgrade -y && \
+    apt install -y openssh-server john ftp nano nmap net-tools iputils-ping hydra python3 unzip curl wget && \
+    apt clean
+
+# Configuration SSH
+#RUN mkdir /var/run/sshd
+
+CMD ["/bin/bash"]

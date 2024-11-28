@@ -1,0 +1,23 @@
+FROM debian:bullseye
+
+# Mise à jour et installation des serveurs FTP et SSH
+RUN apt update && apt install -y vsftpd openssh-server nano net-tools iputils-ping nginx && \
+    apt clean
+
+# Configuration du serveur FTP (connexion anonyme activée)
+RUN echo "anonymous_enable=YES" >> /etc/vsftpd.conf && \
+    echo "local_enable=YES" >> /etc/vsftpd.conf && \
+    echo "write_enable=YES" >> /etc/vsftpd.conf && \
+    echo "anon_root=/home/ftp" >> /etc/vsftpd.conf && \
+    echo "ftpd_banner=Welcome bob to blah FTP service.">> /etc/vsftpd.conf && \
+    mkdir -p /home/ftp && chmod -R 755 /home/ftp && \
+    chown www-data:www-data /var/www/html
+
+# Configuration SSH
+RUN mkdir /var/run/sshd && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "root:basketball" | chpasswd  && \
+    groupadd -r bob && useradd -r -g bob -m bob && \
+    echo "bob:spongebob" | chpasswd
+
+# Script pour démarrer SSH et FTP au démarrage
+CMD service ssh start && service vsftpd start && service nginx start && /bin/bash
