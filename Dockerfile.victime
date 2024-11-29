@@ -11,13 +11,17 @@ RUN echo "anonymous_enable=YES" >> /etc/vsftpd.conf && \
     echo "anon_root=/home/ftp" >> /etc/vsftpd.conf && \
     echo "ftpd_banner=Welcome bob to blah FTP service.">> /etc/vsftpd.conf && \
     mkdir -p /home/ftp && chmod -R 755 /home/ftp && \
-    chown www-data:www-data /var/www/html
+    chown www-data:www-data /var/www && chmod -R 755 /var/www
+
 
 # Configuration SSH
 RUN mkdir /var/run/sshd && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
     echo "root:basketball" | chpasswd  && \
     groupadd -r bob && useradd -r -g bob -m bob && \
-    echo "bob:spongebob" | chpasswd
+    echo "bob:spongebob" | chpasswd && \
+    echo "FLAG{SSH_BOB_CONNECTION_SUCCESS}" > /home/bob/ && \
+    echo "FLAG{SSH_ROOT_CONNECTION_SUCCESS}" > /root/
+
 
 # Script pour démarrer SSH et FTP au démarrage
 CMD service ssh start && service vsftpd start && service nginx start && /bin/bash
