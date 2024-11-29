@@ -19,8 +19,8 @@ RUN mkdir /var/run/sshd && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config &&
     echo "root:basketball" | chpasswd  && \
     groupadd -r bob && useradd -r -g bob -m bob && \
     echo "bob:spongebob" | chpasswd && \
-    echo "FLAG{SSH_BOB_CONNECTION_SUCCESS}" > /home/bob/ && \
-    echo "FLAG{SSH_ROOT_CONNECTION_SUCCESS}" > /root/
+    echo "FLAG{SSH_BOB_CONNECTION_SUCCESS}" > /home/bob/flag2.txt && \
+    echo "FLAG{SSH_ROOT_CONNECTION_SUCCESS}" > /root/flag3.txt
 
 
 # Script pour démarrer SSH et FTP au démarrage
